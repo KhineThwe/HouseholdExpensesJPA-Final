@@ -8,8 +8,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/datePicker.css}" />
 	<style>
 		input[type=radio] {
 			border: 0px;
@@ -32,7 +31,7 @@
 						<div class="mb-3">
 							<label for="exampleFormControlInput1" class="form-label">Date</label>
 							<div id="datepicker" class="input-group date" data-date-format="dd-mm-yyyy">
-								<input id="dateInput" class="form-control" th:field="*{date}" type="text" />
+								<input id="dateInput" class="form-control" th:field="*{date}" type="text" placeholder="date-month-year"/>
 								<span class="input-group-addon input-group-text justify-content-center"
 									style="width: 100px;">
 									<i class="bi bi-calendar3"></i>
@@ -44,6 +43,7 @@
 							<label for="item" class="form-label">Item</label>
 							<input type="text" class="form-control" id="item" th:field="*{item}">
 							<p class="alert alert-warning" th:if="${#fields.hasErrors('item')}" th:errors="*{item}"></p>
+							<p class="text-center" th:if="${same != null}" th:text="${same}"></p>
 						</div>
 
 						<div class="mb-3">
@@ -100,7 +100,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
 		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
 		crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+	<script th:src="@{/datePicker.js}"></script>
 	</script>
 </body>
 

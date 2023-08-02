@@ -22,9 +22,9 @@ public class HouseholdExpensesService {
 	public void save(HouseholdExpensesDto householdExpensesDto) {
 		HouseholdExpeneseEntity entity = new HouseholdExpeneseEntity();
 		String[] dateParts = householdExpensesDto.getDate().split("-");
-		int year = Integer.parseInt(dateParts[0]);
+		int day = Integer.parseInt(dateParts[0]);
 		int month = Integer.parseInt(dateParts[1]);
-		int day = Integer.parseInt(dateParts[2]);
+		int year = Integer.parseInt(dateParts[2]);
 		entity.setYear(year);
 		entity.setMonth(month);
 		entity.setDay(day);
@@ -55,9 +55,9 @@ public class HouseholdExpensesService {
 	public void updateExpenses(HouseholdExpensesDto householdExpensesDto) {
 		HouseholdExpeneseEntity entity = new HouseholdExpeneseEntity();
 		String[] dateParts = householdExpensesDto.getDate().split("-");
-		int year = Integer.parseInt(dateParts[0]);
+		int day = Integer.parseInt(dateParts[0]);
 		int month = Integer.parseInt(dateParts[1]);
-		int day = Integer.parseInt(dateParts[2]);
+		int year = Integer.parseInt(dateParts[2]);
 		entity.setId(householdExpensesDto.getId());
 		entity.setYear(year);
 		entity.setMonth(month);
@@ -77,6 +77,10 @@ public class HouseholdExpensesService {
 
 	public List<MonthlyExpensesList> getMonthlyExpensesDetails(int month, int year) {
 		return expensesRepository.findTotalMonthlyCost(month, year);
+	}
+	
+	public HouseholdExpeneseEntity findForValidate(String day,String month,String year,String item) {
+		return expensesRepository.findForValidate(Integer.parseInt(day),Integer.parseInt(month),Integer.parseInt(year),item);
 	}
 
 }

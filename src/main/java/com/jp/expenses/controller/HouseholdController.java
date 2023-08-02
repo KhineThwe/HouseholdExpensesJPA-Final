@@ -17,6 +17,7 @@ import com.jp.expenses.entity.HouseholdExpeneseEntity;
 import com.jp.expenses.entity.MonthlyExpensesList;
 import com.jp.expenses.service.HouseholdExpensesService;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import jakarta.validation.Valid;
 
 @Controller
@@ -47,24 +48,24 @@ public class HouseholdController {
 			model.addAttribute("expenses", household);
 			return "addExpenses";
 		}
-		List<HouseholdExpeneseEntity> householdList = householdExpensesService.findAll();
 		String[] dateParts = household.getDate().split("-");
-		for (HouseholdExpeneseEntity e : householdList) {
-			if(e.getYear() == Integer.parseInt(dateParts[0]) && e.getMonth() == Integer.parseInt(dateParts[1]) && e.getDay() == Integer.parseInt(dateParts[2])
-					&& e.getItem() == household.getItem()) {
-				System.out.println("Same Record");
-			}
+		HouseholdExpeneseEntity h = householdExpensesService.findForValidate(dateParts[0], dateParts[1], dateParts[2], household.getItem());
+		if(h!=null) {
+			model.addAttribute("same","Same Record Again");
+			model.addAttribute("expenses", household);
+			return "addExpenses";
+		}else {
+			householdExpensesService.save(household);
 		}
-		householdExpensesService.save(household);
-//		String[] dateParts = household.getDate().split("-");
-		String route = "monthlyDetails?year=" + dateParts[0] + "&month=" + dateParts[1];
+		
+		String route = "monthlyDetails?month=" + dateParts[1] + "&year=" + dateParts[2];
 		return "redirect:/" + route;
 	}
 
 	@GetMapping("/monthlyDetails")
-	public String showMonthlyExpenses(Model model, @RequestParam("year") int year, @RequestParam("month") int month) {
+	public String showMonthlyExpenses(Model model, @RequestParam("month") int month, @RequestParam("year") int year) {
 		model.addAttribute("total", householdExpensesService.getTotal(year, month));
-		model.addAttribute("monthlyExpenses", householdExpensesService.getMonthlyExpensesDetails(year, month));
+		model.addAttribute("monthlyExpenses", householdExpensesService.getMonthlyExpensesDetails(month, year));
 		return "monthlyDetails";
 	}
 
@@ -76,7 +77,9 @@ public class HouseholdController {
 
 	@PostMapping("/update")
 	public String updateConfirm(Model model, @ModelAttribute("monthlyExp") HouseholdExpensesDto h) {
-		this.householdExpensesService.updateExpenses(h);
-		return "redirect:/";
+		householdExpensesService.updateExpenses(h);
+		String[] dateParts = h.getDate().split("-");
+		String route = "monthlyDetails?month=" + dateParts[1] + "&year=" + dateParts[2];
+		return "redirect:/" + route;
 	}
 }

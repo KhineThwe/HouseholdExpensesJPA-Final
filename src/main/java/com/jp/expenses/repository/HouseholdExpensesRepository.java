@@ -19,8 +19,11 @@ public interface HouseholdExpensesRepository extends JpaRepository<HouseholdExpe
 	List<MonthlyExpense> findMonthlyExpenses();
 
 	@Query("SELECT new com.jp.expenses.entity.MonthlyExpensesList(h.id,h.year, h.month, h.day, h.item, SUM(h.cost) AS total) "
-			+ "FROM HouseholdExpeneseEntity h " + "WHERE  h.year = ?1 AND h.month = ?2 "
+			+ "FROM HouseholdExpeneseEntity h " + "WHERE  h.month = ?1 AND h.year = ?2 "
 			+ "GROUP BY h.id, h.year, h.month, h.day, h.item " + "ORDER BY h.day DESC")
-	List<MonthlyExpensesList> findTotalMonthlyCost(int year, int month);
+	List<MonthlyExpensesList> findTotalMonthlyCost(int month, int year);
+	
+	@Query("SELECT h FROM HouseholdExpeneseEntity h WHERE h.day=?1 AND h.month=?2 AND h.year=?3 AND h.item=?4")
+	HouseholdExpeneseEntity findForValidate(int day,int month,int year,String item);
 
 }

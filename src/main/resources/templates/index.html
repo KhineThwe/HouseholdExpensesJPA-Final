@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Expenses Calculator</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+</head>
+
+<body>
+	<nav class="text-center alert" style="background-color: #e3f2fd">
+		<a class="navbar-brand my-auto mx-3" href="#" style="font-weight: bold; font-size: 22px">家計費管理</a>
+	</nav>
+	<div class="" style="width: 800px; margin: 100px auto">
+		<div class="d-flex justify-content-between row align-items-center">
+			<p class="col-3 lh-3 mt-3">家計費一覧</p>
+			<a class="col-2 btn btn-primary" style="border-radius: 10px" th:href="@{/addExpenses}">
+				<i class="bi bi-plus-circle-fill" width="10" height="10"></i> 追加
+			</a>
+			<p class="text-center" th:if="${empty != null}" th:text="${empty}"></p>
+		</div>
+		<a th:each="expense : ${householdExpensesList}"
+			th:href="@{/monthlyDetails(month=${expense.month},year=${expense.year})}" style="text-decoration: none;">
+			<div class="row justify-content-between pt-3 px-2 my-2"
+				style="border: 1px solid #3d3d3d; border-radius: 7px">
+				<p class="col-2 text-left">
+					<span th:text="${expense.year}"></span>/<span th:text="${expense.month}"></span>
+				</p>
+				<p class="col-4 text-left" th:text="${#numbers.formatInteger(expense.cost,3,'COMMA')}+' JPY'">JPY</p>
+				<p class="col-1 text-left"><i class="bi bi-chevron-right"></i></p>
+			</div>
+		</a>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>
